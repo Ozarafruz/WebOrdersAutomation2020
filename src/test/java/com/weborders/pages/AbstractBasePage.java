@@ -1,5 +1,6 @@
 package com.weborders.pages;
 
+import com.weborders.utilities.BrowserUtilities;
 import com.weborders.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +21,14 @@ public class AbstractBasePage {
     @FindBy(tagName = "h1")
     protected WebElement pageLogo;
 
+    @FindBy(tagName = "h2")
+    protected WebElement pageSubtitle;
+
+    public String getPageSubtitleText(){
+        BrowserUtilities.waitForPageToLoad(10);
+        return pageSubtitle.getText().trim();
+    }
+
 
 
     public String getPageLogoText(){
@@ -31,8 +40,13 @@ public class AbstractBasePage {
         PageFactory.initElements(Driver.getDriver(),this);//we need this for finding annotations
     }
 
-    public void navigateTo(String component){
-        String locator = "//a[text()="+component+"']";
+    /**
+     * Specify component name as a parameter, like: View all products or Orders
+     * @param component
+     */
+
+    public void navigateTo(String component) {
+        String locator = "//a[text()='" + component + "']";
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator))).click();
     }
 }
